@@ -1,5 +1,13 @@
 import * as React from "react";
-import { useShopQuery, CacheLong, gql, useUrl, Link } from "@shopify/hydrogen";
+import { Suspense } from "react";
+import {
+  useShopQuery,
+  CacheLong,
+  gql,
+  useUrl,
+  Link,
+  Seo,
+} from "@shopify/hydrogen";
 
 const SHOP_QUERY = gql`
   query ShopInfo {
@@ -24,6 +32,15 @@ function BaseLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <>
+      <Suspense>
+        <Seo
+          type="defaultSeo"
+          data={{
+            title: shop.name,
+            description: shop.description,
+          }}
+        />
+      </Suspense>
       <div>
         <header>
           <div>
@@ -31,7 +48,9 @@ function BaseLayout({ children }: { children: React.ReactNode }) {
           </div>
         </header>
 
-        <main id="mainContent">{children}</main>
+        <main id="mainContent">
+          <Suspense>{children}</Suspense>
+        </main>
       </div>
     </>
   );
