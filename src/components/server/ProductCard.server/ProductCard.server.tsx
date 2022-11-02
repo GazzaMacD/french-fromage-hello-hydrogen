@@ -1,10 +1,17 @@
 import { Link, Image, Money } from "@shopify/hydrogen";
+import { TProductCard } from "../../../common/types";
 
-export default function ProductCard({ product }) {
+type TProductCardProps = {
+  product: TProductCard;
+};
+
+function ProductCard({ product }: TProductCardProps) {
   const { priceV2: price, compareAtPriceV2: compareAtPrice } =
     product.variants?.nodes[0] || {};
 
-  const isDiscounted = compareAtPrice?.amount > price?.amount;
+  const isDiscounted = compareAtPrice
+    ? compareAtPrice.amount > price.amount
+    : false;
 
   return (
     <Link to={`/products/${product.handle}`}>
@@ -12,9 +19,14 @@ export default function ProductCard({ product }) {
         <div>
           {isDiscounted && <label>Sale</label>}
           <Image
-            className="aspect-[4/5]"
-            data={product.variants.nodes[0].image}
-            alt="Alt Tag"
+            src={product.variants.nodes[0].image.url}
+            height={product.variants.nodes[0].image.height}
+            width={product.variants.nodes[0].image.width}
+            alt={
+              product.variants.nodes[0].image.altText
+                ? product.variants.nodes[0].image.altText
+                : product.title
+            }
           />
         </div>
         <div>
@@ -32,3 +44,5 @@ export default function ProductCard({ product }) {
     </Link>
   );
 }
+
+export { ProductCard };

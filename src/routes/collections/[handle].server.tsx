@@ -6,9 +6,29 @@ import {
   useServerAnalytics,
   useRouteParams,
   ShopifyAnalyticsConstants,
+  Image,
 } from "@shopify/hydrogen";
+import styles from "../../styles/route-styles/CollectionDetail.module.scss";
 
 import { BaseLayout } from "../../components/layouts/BaseLayout.server";
+import { TImage, TProductCard } from "src/common/types";
+import { ProductCard } from "../../components/server/ProductCard.server";
+
+type TCollectionShopQueryResp = {
+  collection: {
+    id: string;
+    title: string;
+    description: string;
+    seo: {
+      description: string;
+      title: string;
+    };
+    image: TImage;
+    products: {
+      nodes: TProductCard[];
+    };
+  };
+};
 
 const COLLECTION_DETAIL_QUERY = gql`
   query CollectionDetails($handle: String!) {
@@ -20,21 +40,44 @@ const COLLECTION_DETAIL_QUERY = gql`
         title
         description
       }
+      image {
+        id
+        url
+        width
+        height
+        altText
+      }
+      products(first: 8) {
+        nodes {
+          id
+          title
+          publishedAt
+          handle
+          variants(first: 1) {
+            nodes {
+              id
+              image {
+                id
+                url
+                width
+                height
+                altText
+              }
+              priceV2 {
+                amount
+                currencyCode
+              }
+              compareAtPriceV2 {
+                amount
+                currencyCode
+              }
+            }
+          }
+        }
+      }
     }
   }
 `;
-
-type TCollectionShopQueryResp = {
-  collection: {
-    id: string;
-    title: string;
-    description: string;
-    seo: {
-      description: string;
-      title: string;
-    };
-  };
-};
 
 function Collection() {
   const { handle } = useRouteParams();
@@ -54,6 +97,7 @@ function Collection() {
       resourceId: collection.id,
     },
   });
+  console.dir(collection, { depth: null });
 
   return (
     <BaseLayout>
@@ -61,6 +105,19 @@ function Collection() {
         <Seo type="collection" data={collection} />
       </Suspense>
       <header>
+        {collection?.image && (
+          <Image
+            className={styles.TopImage}
+            src={collection.image.url}
+            width={collection.image.width}
+            height={collection.image.height}
+            alt={
+              collection.image.altText
+                ? collection.image.altText
+                : collection.title
+            }
+          />
+        )}
         <h1>{collection.title}</h1>
         {collection.description && (
           <div>
@@ -70,6 +127,11 @@ function Collection() {
           </div>
         )}
       </header>
+      <main className={styles.ProductList}>
+        {collection.products.nodes.map((product) => (
+          <ProductCard key={product.id} product={product} />
+        ))}
+      </main>
     </BaseLayout>
   );
 }
