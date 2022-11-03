@@ -1,11 +1,7 @@
+import { Product } from "@shopify/hydrogen/storefront-api-types";
 /*
  * Base
  */
-// Money
-type TMoney = {
-  amount: string;
-  currencyCode: string;
-};
 
 export type TImage = {
   id: string;
@@ -18,17 +14,4 @@ export type TImage = {
 /*
  * Products
  */
-export type TProductCard = {
-  id: string;
-  title: string;
-  publishedAt: string;
-  handle: string;
-  variants: {
-    nodes: {
-      id: string;
-      image: TImage;
-      priceV2: TMoney;
-      compareAtPriceV2: TMoney | null;
-    }[];
-  };
-};
+export type TProduct = Product;

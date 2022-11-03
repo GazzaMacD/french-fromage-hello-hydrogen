@@ -8,19 +8,91 @@ import {
   Seo,
 } from "@shopify/hydrogen";
 import { BaseLayout } from "../../components/layouts/BaseLayout.server/index";
+import { ProductDetail } from "../../components/client/ProductDetails.client";
 
 //types
 import { Product as TProduct } from "@shopify/hydrogen/storefront-api-types";
 
 const PRODUCT_QUERY = gql`
-  query Product($language: LanguageCode, $handle: String!)
-  @inContext(language: $language) {
+  fragment MediaFields on Media {
+    mediaContentType
+    alt
+    previewImage {
+      url
+    }
+    ... on MediaImage {
+      id
+      image {
+        url
+        width
+        height
+      }
+    }
+    ... on Video {
+      id
+      sources {
+        mimeType
+        url
+      }
+    }
+    ... on Model3d {
+      id
+      sources {
+        mimeType
+        url
+      }
+    }
+    ... on ExternalVideo {
+      id
+      embedUrl
+      host
+    }
+  }
+  query Product($handle: String!) {
     product(handle: $handle) {
       id
       title
+      vendor
+      descriptionHtml
+      media(first: 7) {
+        nodes {
+          ...MediaFields
+        }
+      }
+      variants(first: 100) {
+        nodes {
+          id
+          availableForSale
+          compareAtPriceV2 {
+            amount
+            currencyCode
+          }
+          selectedOptions {
+            name
+            value
+          }
+          image {
+            id
+            url
+            altText
+            width
+            height
+          }
+          priceV2 {
+            amount
+            currencyCode
+          }
+          sku
+          title
+          unitPrice {
+            amount
+            currencyCode
+          }
+        }
+      }
       seo {
-        title
         description
+        title
       }
     }
   }
@@ -49,9 +121,7 @@ function Product() {
       <Suspense>
         <Seo type="product" data={product} />
       </Suspense>
-      <section>
-        This will be the product page for <strong>{product.title}</strong>
-      </section>
+      <ProductDetail product={product} />
     </BaseLayout>
   );
 }

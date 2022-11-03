@@ -11,7 +11,7 @@ import {
 import styles from "../../styles/route-styles/CollectionDetail.module.scss";
 
 import { BaseLayout } from "../../components/layouts/BaseLayout.server";
-import { TImage, TProductCard } from "src/common/types";
+import { TImage, TProduct } from "src/common/types";
 import { ProductCard } from "../../components/server/ProductCard.server";
 
 type TCollectionShopQueryResp = {
@@ -25,7 +25,7 @@ type TCollectionShopQueryResp = {
     };
     image: TImage;
     products: {
-      nodes: TProductCard[];
+      nodes: TProduct[];
     };
   };
 };

@@ -1,18 +1,23 @@
 import { Link, Image, Money } from "@shopify/hydrogen";
-import { TProductCard } from "../../../common/types";
+import { DEFAULT_IMAGE } from "../../../common/constants";
 import styles from "./ProductCard.module.scss";
 
-type TProductCardProps = {
-  product: TProductCard;
-};
+//types
+import { TProduct, TImage } from "../../../common/types";
 
-function ProductCard({ product }: TProductCardProps) {
+function ProductCard({ product }: { product: TProduct }) {
   const { priceV2: price, compareAtPriceV2: compareAtPrice } =
     product.variants?.nodes[0] || {};
 
   const isDiscounted = compareAtPrice
     ? compareAtPrice.amount > price.amount
     : false;
+
+  let image: TImage = DEFAULT_IMAGE;
+
+  if (product?.variants?.nodes[0]?.image) {
+    image = product.variants.nodes[0].image;
+  }
 
   return (
     <Link to={`/products/${product.handle}`}>
@@ -21,14 +26,10 @@ function ProductCard({ product }: TProductCardProps) {
           {isDiscounted && <label>Sale</label>}
           <Image
             className={styles.Image}
-            src={product.variants.nodes[0].image.url}
-            height={product.variants.nodes[0].image.height}
-            width={product.variants.nodes[0].image.width}
-            alt={
-              product.variants.nodes[0].image.altText
-                ? product.variants.nodes[0].image.altText
-                : product.title
-            }
+            src={image.url}
+            height={image?.height ? image.height : 500}
+            width={image?.width ? image.width : 500}
+            alt={image.altText ? image.altText : product.title}
           />
         </div>
         <div>
@@ -36,7 +37,7 @@ function ProductCard({ product }: TProductCardProps) {
           <div>
             <span>
               <Money withoutTrailingZeros data={price} />
-              {isDiscounted && (
+              {isDiscounted && compareAtPrice && (
                 <Money withoutTrailingZeros data={compareAtPrice} />
               )}
             </span>
