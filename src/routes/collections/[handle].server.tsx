@@ -97,7 +97,6 @@ function Collection() {
       resourceId: collection.id,
     },
   });
-  console.dir(collection, { depth: null });
 
   return (
     <BaseLayout>

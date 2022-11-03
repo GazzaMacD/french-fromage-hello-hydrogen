@@ -1,5 +1,6 @@
 import { Link, Image, Money } from "@shopify/hydrogen";
 import { TProductCard } from "../../../common/types";
+import styles from "./ProductCard.module.scss";
 
 type TProductCardProps = {
   product: TProductCard;
@@ -19,6 +20,7 @@ function ProductCard({ product }: TProductCardProps) {
         <div>
           {isDiscounted && <label>Sale</label>}
           <Image
+            className={styles.Image}
             src={product.variants.nodes[0].image.url}
             height={product.variants.nodes[0].image.height}
             width={product.variants.nodes[0].image.width}
