@@ -5,5 +5,6 @@ dist
 *.local
 # Keep this in local repo for now
 hydrogen.config.ts
+local_files/
 
         
