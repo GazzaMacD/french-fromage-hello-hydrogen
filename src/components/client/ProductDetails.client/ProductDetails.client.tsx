@@ -34,7 +34,7 @@ function ProductDetail({ product }: { product: TProduct }) {
 export { ProductDetail };
 
 // components
-function ProductForm({ product }) {
+function ProductForm({ product }: { product: TProduct }) {
   const { options, selectedVariant } = useProductOptions();
   const isOutOfStock = !selectedVariant?.availableForSale || false;
   return (
@@ -42,61 +42,82 @@ function ProductForm({ product }) {
       {
         <div>
           {options &&
-            options.map(({ name, values }) => {
-              if (values.length === 1) {
+            options.map((option) => {
+              if (!option || !option?.values || option.values.length === 1) {
                 return null;
-              }
-              return (
-                <div key={name}>
-                  <legend>{name}</legend>
-                  <div>
-                    <OptionRadio name={name} values={values} />
+              } else {
+                return (
+                  <div key={option.name}>
+                    <legend>{option.name}</legend>
+                    <div>
+                      <OptionRadio name={option.name} values={option.values} />
+                    </div>
                   </div>
-                </div>
-              );
+                );
+              }
             })}
         </div>
       }
       <div>
-        <ProductPrice
-          priceType="compareAt"
-          variantId={selectedVariant.id}
-          data={product}
-        />
-        <ProductPrice variantId={selectedVariant.id} data={product} />
+        {selectedVariant ? (
+          <>
+            <ProductPrice
+              priceType="compareAt"
+              variantId={selectedVariant.id}
+              data={product}
+            />
+            <ProductPrice variantId={selectedVariant.id} data={product} />
+          </>
+        ) : (
+          <p>Sorry no price available!</p>
+        )}
       </div>
       <div>
         {isOutOfStock ? (
           <span>Available in 2-3 weeks</span>
-        ) : (
+        ) : selectedVariant.id ? (
           <BuyNowButton variantId={selectedVariant.id}>
             <span>Buy it now</span>
           </BuyNowButton>
+        ) : (
+          <p>Sorry something is wrong</p>
         )}
       </div>
     </form>
   );
 }
-function OptionRadio({ values, name }) {
+
+function OptionRadio({
+  name,
+  values,
+}: {
+  name: string | undefined;
+  values: (string | undefined)[];
+}) {
   const { selectedOptions, setSelectedOption } = useProductOptions();
   return (
     <>
       {values.map((value) => {
-        const checked = selectedOptions[name] === value;
+        const checked =
+          selectedOptions && name ? selectedOptions[name] === value : false;
         const id = `option-${name}-${value}`;
-        return (
-          <label key={id} htmlFor={id}>
-            <input
-              type="radio"
-              id={id}
-              name={`option[${name}]`}
-              value={value}
-              checked={checked}
-              onChange={() => setSelectedOption(name, value)}
-            />
-            <div>{value}</div>
-          </label>
-        );
+        if (name && value) {
+          return (
+            <label key={id} htmlFor={id}>
+              <input
+                type="radio"
+                id={id}
+                name={`option[${name}]`}
+                value={value}
+                checked={checked}
+                onChange={() => setSelectedOption(name, value)}
+              />
+              <div>{value}</div>
+            </label>
+          );
+        } else {
+          return null;
+        }
       })}
     </>
   );
