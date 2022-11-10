@@ -8,6 +8,7 @@ import {
   Link,
   Seo,
 } from "@shopify/hydrogen";
+import { Header } from "../../client/Header.client/Header.client";
 
 const SHOP_QUERY = gql`
   query ShopInfo {
@@ -42,14 +43,10 @@ function BaseLayout({ children }: { children: React.ReactNode }) {
         />
       </Suspense>
       <div>
-        <header>
-          <div>
-            <Link to="/">{shop.name}</Link>
-          </div>
-        </header>
+        <Header shop={shop} />
 
         <main id="mainContent">
-          <Suspense>{children}</Suspense>
+          <Suspense fallback={null}>{children}</Suspense>
         </main>
       </div>
     </>
