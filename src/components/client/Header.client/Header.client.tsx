@@ -1,5 +1,6 @@
 import { useUrl, Link, useCart } from "@shopify/hydrogen";
 import { Drawer, useDrawer } from "../Drawer.client";
+import styles from "./Header.module.scss";
 
 function Header({ shop }) {
   const { pathname } = useUrl();
@@ -8,11 +9,11 @@ function Header({ shop }) {
   return (
     <>
       <Drawer open={isOpen} onClose={closeDrawer}></Drawer>
-      <header role="banner">
+      <header className={styles.Header} role="banner">
         <div>
           <Link to="/">{shop.name}</Link>
         </div>
-        <button onClick={openDrawer}>
+        <button className={styles.CartButton} onClick={openDrawer}>
           <IconBag />
           <CartBadge dark={isHome} />
         </button>
@@ -20,12 +21,14 @@ function Header({ shop }) {
     </>
   );
 }
+
 function IconBag() {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 20 20"
       fill="currentColor"
+      className={styles.IconBag}
     >
       <title>Bag</title>
       <path
@@ -41,7 +44,7 @@ function CartBadge({ dark }: { dark: boolean }) {
     return null;
   }
   return (
-    <div>
+    <div className={styles.CartBadge}>
       <span>{totalQuantity}</span>
     </div>
   );
