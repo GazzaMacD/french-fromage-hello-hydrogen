@@ -1,5 +1,6 @@
 import { useUrl, Link, useCart } from "@shopify/hydrogen";
 import { Drawer, useDrawer } from "../Drawer.client";
+import { CartDetails } from "../CartDetails.client/CartDetails.client";
 import { RiShoppingBagLine } from "react-icons/ri";
 import styles from "./Header.module.scss";
 
@@ -9,7 +10,9 @@ function Header({ shop }) {
   const isHome = pathname === "/";
   return (
     <>
-      <Drawer open={isOpen} onClose={closeDrawer}></Drawer>
+      <Drawer open={isOpen} onClose={closeDrawer}>
+        <CartDetails onClose={closeDrawer} />
+      </Drawer>
       <header className={styles.Header} role="banner">
         <div>
           <Link to="/">{shop.name}</Link>

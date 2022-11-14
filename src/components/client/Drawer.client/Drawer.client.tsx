@@ -30,6 +30,7 @@ function Drawer({ open, onClose, children }: TDrawerProps) {
             <RiCloseFill />
           </button>
         </header>
+        <div>{children}</div>
       </div>
     </>
   );
