@@ -1,6 +1,51 @@
 @import "/src/styles/sass/utils";
 
-.Dialog {
-  position: relative;
+.Drawer {
+  position: fixed;
   z-index: 50;
+  right: 0;
+  top: 0;
+  height: 100%;
+  width: 250px;
+  background-color: white;
+  overscroll-behavior: contain;
+  transition: transform 0.5s;
+  &__open {
+    transform: translateX(0);
+  }
+  &__close {
+    transform: translateX(250px);
+  }
+}
+
+.Header {
+  height: 4rem;
+  padding: 0 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  & button {
+    outline: none;
+    border: none;
+    background-color: transparent;
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+
+.Overlay {
+  position: fixed;
+  z-index: 49;
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.25);
+  height: 100%;
+  transition: opacity 1s ease-in-out, visibility 0.5s;
+  &__open {
+    opacity: 100;
+    visibility: visible;
+  }
+  &__close {
+    opacity: 0;
+    visibility: hidden;
+  }
 }

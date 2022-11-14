@@ -1,6 +1,6 @@
-import { Fragment, useState } from "react";
-import { Transition, Dialog } from "@headlessui/react";
+import { useState } from "react";
 import styles from "./Drawer.module.scss";
+import { RiCloseFill } from "react-icons/ri";
 
 /**
  * A Drawer component that opens on user click.
@@ -13,59 +13,38 @@ type TDrawerProps = {
 };
 function Drawer({ open, onClose, children }: TDrawerProps) {
   return (
-    <Transition appear show={open} as={Fragment}>
-      <Dialog as="div" onClose={onClose}>
-        <Transition.Child
-          as={Fragment}
-          /*
-          enter="ease-out duration-300"
-          enterFrom="opacity-0 left-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-          */
-        >
-          <div />
-        </Transition.Child>
-        <div>
-          <div>
-            <div>
-              <Transition.Child
-                as={Fragment}
-                enter="transform transition ease-in-out duration-500 sm:duration-700"
-                enterFrom="translate-x-full"
-                enterTo="translate-x-0"
-                leave="transform transition ease-in-out duration-500 sm:duration-700"
-                leaveFrom="translate-x-0"
-                leaveTo="translate-x-full"
-              >
-                <Dialog.Panel>
-                  <header>
-                    <h2 id="cart-contents">Cart</h2>
-                    <button type="button" onClick={onClose}>
-                      <IconClose aria-label="Close panel" />
-                    </button>
-                  </header>
-                  {children}
-                </Dialog.Panel>
-              </Transition.Child>
-            </div>
-          </div>
-        </div>
-      </Dialog>
-    </Transition>
+    <>
+      <div
+        className={`${styles.Overlay} ${
+          open ? styles.Overlay__open : styles.Overlay__close
+        }`}
+      ></div>
+      <div
+        className={`${styles.Drawer} ${
+          open ? styles.Drawer__open : styles.Drawer__close
+        }`}
+      >
+        <header className={styles.Header}>
+          <h3>My Cart</h3>
+          <button onClick={onClose}>
+            <RiCloseFill />
+          </button>
+        </header>
+      </div>
+    </>
   );
 }
-/* Use for associating arialabelledby with the title*/
-Drawer.Title = Dialog.Title;
 
 function useDrawer(openDefault = false) {
   const [isOpen, setIsOpen] = useState(openDefault);
   function openDrawer() {
+    document.body.style.position = "fixed";
+    document.body.style.overflow = "hidden";
     setIsOpen(true);
   }
   function closeDrawer() {
+    document.body.style.position = "";
+    document.body.style.overflow = "";
     setIsOpen(false);
   }
   return {
@@ -75,31 +54,4 @@ function useDrawer(openDefault = false) {
   };
 }
 
-function IconClose() {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 20 20"
-      className="w-5 h-5"
-    >
-      <title>Close</title>
-      <line
-        x1="4.44194"
-        y1="4.30806"
-        x2="15.7556"
-        y2="15.6218"
-        stroke="currentColor"
-        strokeWidth="1.25"
-      />
-      <line
-        y1="-0.625"
-        x2="16"
-        y2="-0.625"
-        transform="matrix(-0.707107 0.707107 0.707107 0.707107 16 4.75)"
-        stroke="currentColor"
-        strokeWidth="1.25"
-      />
-    </svg>
-  );
-}
 export { Drawer, useDrawer };
