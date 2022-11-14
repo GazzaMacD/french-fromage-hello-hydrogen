@@ -21,3 +21,7 @@ export type TMediaNodes = (TMediaImage | TExternalVideo | TVideo | TModel3d)[];
  * Products
  */
 export type TProduct = Product;
+
+/*
+ * Cart Details
+ */
