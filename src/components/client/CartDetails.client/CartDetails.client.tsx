@@ -11,6 +11,8 @@ import {
   Money,
 } from "@shopify/hydrogen";
 
+import styles from "./CartDetails.module.scss";
+
 /** Types */
 type TCartDetailProps = {
   onClose: () => void;
@@ -55,7 +57,12 @@ function CartDetails({ onClose }: TCartDetailProps) {
 }
 
 function CartEmpty({ onClose }: TCartEmptyProps) {
-  return <div>your cart is empty</div>;
+  return (
+    <div className={styles.CartEmpty}>
+      <h2>your cart is empty</h2>
+      <button onClick={onClose}>continue shopping</button>
+    </div>
+  );
 }
 
 function CartCheckoutActions() {

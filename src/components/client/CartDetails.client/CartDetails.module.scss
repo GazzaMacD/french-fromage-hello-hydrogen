@@ -2,6 +2,23 @@
 
 // CartDetails
 // CartEmpty
+.CartEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  & h2 {
+    font-size: 1rem;
+    text-transform: capitalize;
+    margin-bottom: 1rem;
+  }
+  & button {
+    background-color: $rich-black;
+    width: 100%;
+    color: white;
+    text-transform: uppercase;
+  }
+}
 // CartCheckoutActions
 // OrderSummary
 // CartLineItems
