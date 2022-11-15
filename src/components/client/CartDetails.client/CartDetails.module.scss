@@ -11,6 +11,9 @@
   padding: 0.6rem 0.4rem;
 }
 // CartDetails
+.CartList {
+  padding: 0;
+}
 // CartEmpty
 .CartEmpty {
   display: flex;
@@ -56,4 +59,13 @@
   }
 }
 // CartLineItems
+.LiItem {
+  display: flex;
+  justify-content: space-between;
+  &__image {
+    height: 100px;
+    width: 100px;
+    object-fit: cover;
+  }
+}
 // CartLineQuantAdj

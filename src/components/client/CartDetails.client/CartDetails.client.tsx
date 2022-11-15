@@ -36,7 +36,7 @@ function CartDetails({ onClose }: TCartDetailProps) {
   return (
     <form className="">
       <section aria-labelledby="cart-contents" className="">
-        <ul className="">
+        <ul className={styles.CartList}>
           {lines.map((line) => {
             return (
               <CartLineProvider key={line.id} line={line}>
@@ -105,7 +105,30 @@ function OrderSummary() {
 }
 
 function CartLineItem() {
-  return <div>CartLineItem</div>;
+  const { linesRemove } = useCart();
+  const { id: lineId, quantity, merchandise } = useCartLine();
+  return (
+    <li className={styles.LiItem}>
+      <div className={styles.LiItem__imageBlock}>
+        <Image className={styles.LiItem__image} data={merchandise.image} />
+      </div>
+      <div>
+        <h3>
+          <Link to={`/products/${merchandise.product.handle}`}>
+            {merchandise.product.title}
+          </Link>
+        </h3>
+      </div>
+      <div>
+        <CartLineQuantityAdjust
+          lineId={lineId}
+          quantity={quantity}
+          linesRemove={linesRemove}
+        />
+      </div>
+      CartLineItem
+    </li>
+  );
 }
 
 function CartLineQuantityAdjust({ lineId, quantity }: TCartLineQAProps) {
