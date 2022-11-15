@@ -81,7 +81,27 @@ function CartCheckoutActions() {
 }
 
 function OrderSummary() {
-  return <div>Order summary</div>;
+  const { cost } = useCart();
+  return (
+    <>
+      <dl className={styles.OrderSummary}>
+        <div>
+          <dt>subtotal</dt>
+          <dd>
+            {cost?.subtotalAmount?.amount ? (
+              <Money data={cost?.subtotalAmount} />
+            ) : (
+              "-"
+            )}
+          </dd>
+        </div>
+        <div>
+          <dt>shipping estimate</dt>
+          <dd className={styles.Shipping}>free </dd>
+        </div>
+      </dl>
+    </>
+  );
 }
 
 function CartLineItem() {

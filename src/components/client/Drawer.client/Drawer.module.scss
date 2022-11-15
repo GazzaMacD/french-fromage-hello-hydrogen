@@ -7,7 +7,7 @@
   top: 0;
   height: 100%;
   padding: 0 0.5rem 2rem 0.5rem;
-  width: 250px;
+  width: 300px;
   background-color: white;
   overscroll-behavior: contain;
   transition: transform 0.5s;
@@ -15,7 +15,7 @@
     transform: translateX(0);
   }
   &__close {
-    transform: translateX(250px);
+    transform: translateX(300px);
   }
 }
 

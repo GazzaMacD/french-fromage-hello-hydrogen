@@ -43,5 +43,17 @@
   width: 100%;
 }
 // OrderSummary
+.OrderSummary {
+  & > div {
+    display: flex;
+    justify-content: space-between;
+  }
+  & dt {
+    text-transform: capitalize;
+  }
+  & .Shipping {
+    color: green;
+  }
+}
 // CartLineItems
 // CartLineQuantAdj
