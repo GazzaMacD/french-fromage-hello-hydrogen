@@ -67,7 +67,17 @@ function CartEmpty({ onClose }: TCartEmptyProps) {
 }
 
 function CartCheckoutActions() {
-  return <div>continue to checkout</div>;
+  const { checkoutUrl } = useCart();
+  return (
+    <>
+      <div className={styles.CheckoutActions}>
+        <Link to={checkoutUrl ? checkoutUrl : ""} className={styles.ToCheckout}>
+          continue to checkout
+        </Link>
+        <CartShopPayButton className={styles.ShopPay} />
+      </div>
+    </>
+  );
 }
 
 function OrderSummary() {

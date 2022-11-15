@@ -1,5 +1,15 @@
 @import "/src/styles/sass/utils";
-
+.ButtonBlack {
+  background-color: $rich-black;
+  width: 100%;
+  color: white;
+  text-transform: uppercase;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-align: center;
+  border-radius: 5px;
+  padding: 0.6rem 0.4rem;
+}
 // CartDetails
 // CartEmpty
 .CartEmpty {
@@ -13,19 +23,23 @@
     margin-bottom: 1rem;
   }
   & button {
-    background-color: $rich-black;
-    width: 100%;
-    color: white;
-    text-transform: uppercase;
-    font-weight: 600;
-    padding: 0.5rem;
+    @extend .ButtonBlack;
   }
 }
 // CartCheckoutActions
 .CheckoutActions {
   display: flex;
   flex-direction: column;
+  gap: 1rem;
   align-items: center;
+  width: 100%;
+  margin: 1rem 0;
+}
+.ToCheckout {
+  @extend .ButtonBlack;
+  text-decoration: none;
+}
+.ShopPay {
   width: 100%;
 }
 // OrderSummary
