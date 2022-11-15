@@ -27,6 +27,7 @@ type TCartLineQAProps = {
 
 function CartDetails({ onClose }: TCartDetailProps) {
   const { lines } = useCart();
+  console.dir(lines, { depth: null });
 
   if (lines.length === 0) {
     return <CartEmpty onClose={onClose} />;

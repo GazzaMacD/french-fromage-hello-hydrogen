@@ -1,1 +1,18 @@
 @import "/src/styles/sass/utils";
+.AddToCart {
+  background-color: $rich-black;
+  color: white;
+  padding: 0.4rem 0.8rem;
+}
+.BuyNow {
+  background-color: white;
+  padding: 0.4rem 0.8rem;
+}
+.PurchaseMarkup {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  margin: 1rem 0;
+  gap: 1rem;
+}

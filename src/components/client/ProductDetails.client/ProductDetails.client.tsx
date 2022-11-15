@@ -4,7 +4,9 @@ import {
   useProductOptions,
   ProductPrice,
   BuyNowButton,
+  AddToCartButton,
 } from "@shopify/hydrogen";
+import styles from "./ProductDetail.module.scss";
 
 //types
 import { TProduct, TMediaNodes } from "src/common/types";
@@ -72,18 +74,39 @@ function ProductForm({ product }: { product: TProduct }) {
           <p>Sorry no price available!</p>
         )}
       </div>
-      <div>
+      <PurchaseMarkup />
+    </form>
+  );
+}
+
+function PurchaseMarkup() {
+  const { selectedVariant } = useProductOptions();
+  const isOutOfStock = !selectedVariant?.availableForSale || false;
+  return (
+    <>
+      <div className={styles.PurchaseMarkup}>
+        <AddToCartButton
+          type="button"
+          variantId={selectedVariant?.id ? selectedVariant.id : ""}
+          quantity={1}
+          accessibleAddingToCartLabel="Adding item to your cart"
+          disabled={isOutOfStock}
+        >
+          <span className={styles.AddToCart}>
+            {isOutOfStock ? `Sold out` : `Add to cart`}
+          </span>
+        </AddToCartButton>
         {isOutOfStock ? (
           <span>Available in 2-3 weeks</span>
         ) : selectedVariant.id ? (
           <BuyNowButton variantId={selectedVariant.id}>
-            <span>Buy it now</span>
+            <span className={styles.BuyNow}>Buy it now</span>
           </BuyNowButton>
         ) : (
           <p>Sorry something is wrong</p>
         )}
       </div>
-    </form>
+    </>
   );
 }
 
