@@ -10,6 +10,9 @@ import {
   Link,
   Money,
 } from "@shopify/hydrogen";
+import { SlTrash } from "react-icons/sl";
+import { AiOutlinePlus, AiOutlineMinus } from "react-icons/ai";
+import * as React from "react";
 
 import styles from "./CartDetails.module.scss";
 
@@ -27,16 +30,15 @@ type TCartLineQAProps = {
 
 function CartDetails({ onClose }: TCartDetailProps) {
   const { lines } = useCart();
-  console.dir(lines, { depth: null });
 
   if (lines.length === 0) {
     return <CartEmpty onClose={onClose} />;
   }
 
   return (
-    <form className="">
-      <section aria-labelledby="cart-contents" className="">
-        <ul className={styles.CartList}>
+    <div className={styles.CartDetails}>
+      <section aria-labelledby="cart-contents" className={styles.CartList}>
+        <ul>
           {lines.map((line) => {
             return (
               <CartLineProvider key={line.id} line={line}>
@@ -53,7 +55,7 @@ function CartDetails({ onClose }: TCartDetailProps) {
         <OrderSummary />
         <CartCheckoutActions />
       </section>
-    </form>
+    </div>
   );
 }
 
@@ -105,34 +107,70 @@ function OrderSummary() {
 }
 
 function CartLineItem() {
-  const { linesRemove } = useCart();
+  const { linesRemove, linesUpdate } = useCart();
   const { id: lineId, quantity, merchandise } = useCartLine();
   return (
     <li className={styles.LiItem}>
       <div className={styles.LiItem__imageBlock}>
         <Image className={styles.LiItem__image} data={merchandise.image} />
       </div>
-      <div>
+      <div className={styles.LiItem__details}>
         <h3>
           <Link to={`/products/${merchandise.product.handle}`}>
             {merchandise.product.title}
           </Link>
         </h3>
+        <div>
+          {(merchandise?.selectedOptions || []).map((option) => (
+            <span key={option.name}>
+              {option.name}: {option.value}
+            </span>
+          ))}
+        </div>
       </div>
-      <div>
-        <CartLineQuantityAdjust
-          lineId={lineId}
-          quantity={quantity}
-          linesRemove={linesRemove}
-        />
+      <div className={styles.LiItem__adjust}>
+        <button
+          type="button"
+          className={styles.LiItem__remove}
+          aria-label="delete product"
+          onClick={() => linesRemove([lineId])}
+        >
+          <SlTrash />
+        </button>
+        <CartLineQuantityAdjust lineId={lineId} quantity={quantity} />
       </div>
-      CartLineItem
+      <div className={styles.LiItem__price}>
+        <CartLinePrice as="span" />
+      </div>
     </li>
   );
 }
 
 function CartLineQuantityAdjust({ lineId, quantity }: TCartLineQAProps) {
-  return <div>Shopping</div>;
+  return (
+    <div className={styles.QuAdj}>
+      <label htmlFor={`quantity-${lineId}`} className={styles.QuAdj__label}>
+        Quantity, {quantity}
+      </label>
+      <CartLineQuantityAdjustButton
+        adjust="decrease"
+        type="button"
+        aria-label="Decrease quantity"
+        className={styles.QuAdj__dec}
+      >
+        <AiOutlineMinus />
+      </CartLineQuantityAdjustButton>
+      <CartLineQuantity as="div" className={styles.QuAdj__quant} />
+      <CartLineQuantityAdjustButton
+        adjust="increase"
+        type="button"
+        aria-label="Increase quantity"
+        className={styles.QuAdj__inc}
+      >
+        <AiOutlinePlus />
+      </CartLineQuantityAdjustButton>
+    </div>
+  );
 }
 
 export { CartDetails };
